@@ -38,15 +38,15 @@ public struct CID: CustomStringConvertible, Equatable, Hashable, Codable {
     /// The version of this CID.
     ///
     /// CIDv0 can be converted to CIDv1 with the `CIDv1` function.
-    var version: Version
+    public var version: Version
     /// The multicodec describing the format of the content identified by this CID.
     ///
     /// For CIDv0 this is alwaus `.dag_pb`
-    var codec: CodecPrefix
+    public var codec: CodecPrefix
     /// The multihash containing the digest of the content identified by this CID.
     ///
     /// For CIDv0 this must be a `.sha2_256` Multihash.
-    var hash: Multihash
+    public var hash: Multihash
 
     /// Returns a textual representation of this CID.
     ///
@@ -67,14 +67,14 @@ public struct CID: CustomStringConvertible, Equatable, Hashable, Codable {
     }
 
     /// Directly construct a CID with the specified properties.
-    init(version: Version, codec: CodecPrefix, hash: Multihash) {
+    public init(version: Version, codec: CodecPrefix, hash: Multihash) {
         self.version = version
         self.codec = codec
         self.hash = hash
     }
 
     /// Parse a multibase encoded CID.
-    init(_ string: String) throws {
+    public init(_ string: String) throws {
         var data: Data
         if string.count == 46, string.hasPrefix("Qm") {
             data = try Data(fromMultibaseEncodedString: String(string[string.startIndex...]), withEncoding: .base58btc)
@@ -85,7 +85,7 @@ public struct CID: CustomStringConvertible, Equatable, Hashable, Codable {
     }
 
     /// Parse a CID directly from the data. This is data __after__ being multibase decoded. If you have a multibase string use the init(String) variant.
-    init(_ data: Data) throws {
+    public init(_ data: Data) throws {
         if data.count == 34, data.prefix(2) == Data([0x12, 0x20]) {
             // CIDv0
             self.version = .v0
